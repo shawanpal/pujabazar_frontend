@@ -45,7 +45,7 @@ Route::get('email', function () {
 Route::get('/', 'FrontendControllers\ViewController@index')->name('home');
 Route::get('/product-details/{code}', 'FrontendControllers\ViewController@productDetails');
 Route::post('/submit-review', 'FrontendControllers\ViewController@submitReview');
-
+Route::get('/store-location', 'FrontendControllers\ViewController@storeLocation')->name('home');
 
 //Route::get('/home', 'HomeController@index');
 

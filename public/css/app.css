@@ -6423,6 +6423,7 @@ html[xmlns] .flexslider .slides {
 }
 .header.shop .list-main li a:hover{
 	color:#F7941D;
+        text-decoration: none;
 }
 .header.shop .nav li {
 	margin-right: 40px;
@@ -14525,12 +14526,7 @@ address {
   line-height: inherit;
 }
 
-ol,
-ul,
-dl {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
+
 
 ol ol,
 ul ul,
