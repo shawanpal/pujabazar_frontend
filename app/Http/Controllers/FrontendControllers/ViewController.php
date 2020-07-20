@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\User;
 use App\Product;
 use App\Image;
 use App\Review;
@@ -17,7 +20,7 @@ use App\State;
 
 class ViewController extends Controller {
 
-    private function get_client_state() {
+    protected function get_client_state() {
         $ipaddress = '';
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
@@ -45,6 +48,22 @@ class ViewController extends Controller {
             return State::where(['name' => 'West Bengal'])->first();
         }
         
+    }
+    
+    protected function signInValidator(array $data) {
+        return Validator::make($data, [
+                    'email' => ['required', 'email'],
+                    'password' => ['required'],
+        ]);
+    }
+    
+    protected function signUpvalidator(array $data) {
+        return Validator::make($data, [
+                    'name' => ['required', 'string'],
+                    'email' => ['required', 'email', 'unique:users'],
+                    'phone' => ['required', 'numeric', 'unique:users', 'min:10'],
+                    'password' => ['required']
+        ]);
     }
 
     public function index() {
@@ -121,5 +140,66 @@ class ViewController extends Controller {
         $data['locations'] = State::all();
         return view('store-location', $data);
     }
+    
+    public function signin() {
+        $data['state'] = $this->get_client_state();
+        return view('signin', $data);
+    }
+    
+    public function signup() {
+        $data['state'] = $this->get_client_state();
+        return view('signup', $data);
+    }
+    
+    public function userSignin(Request $request) {
+        $validator = $this->signInValidator($request->input());
+        if ($validator->fails()) {
+            return Redirect::back()
+                            ->withErrors($validator)
+                            ->withInput();
+        } else {
+            $email = $request->input('email');
+            $password = $request->input('password');
+            $credentials = ['email' => $email, 'password' => $password];
+            if (Auth::attempt($credentials)) {
+                return Redirect('/');
+            } else {
+                return Redirect::back()
+                        ->with('error', 'Wrong Credientials!');
+            }
+        }
+    }
+    
+    protected function createNewUser(array $data) {
+        return User::create([
+                    'role' => 'Buyer',
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'password' => Hash::make($data['password']),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
+    
+    public function userSignUp(Request $request) {
+        $validator = $this->signUpvalidator($request->input());
+        if ($validator->fails()) {
+            return Redirect::back()
+                            ->withErrors($validator)
+                            ->withInput();
+        }
+        $this->createNewUser($request->input());
+        return Redirect('/signin')
+                    ->with('success', 'Thank you for the register!');
+    }
+    
+    public function signout() {
+        if (Auth::check()) {
+            Auth::logout();
+            return Redirect('/');
+        }
+    }
+    
 
 }

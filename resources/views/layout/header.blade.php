@@ -54,8 +54,14 @@
                             <div class="right-content">
                                 <ul class="list-main">
                                     <li><i class="ti-location-pin"></i> <a href="{{url('/store-location')}}">Store location</a></li>
-                                    <li><i class="ti-user"></i> <a href="#">My account</a></li>
-                                    <li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+                                    @auth
+                                    <li><i class="ti-user"></i> <a href="{{url('/my-account')}}">My account</a></li>
+                                    <li><i class="ti-export"></i> <a href="{{url('/signout')}}">Sign Out</a></li>
+                                    @endauth
+                                    @guest
+                                    <li><i class="ti-power-off"></i><a href="{{url('/signin')}}">Sign In</a></li>
+                                    <li><i class="ti-check-box"></i><a href="{{url('/signup')}}">Sign Up</a></li>
+                                    @endguest
                                 </ul>
                             </div>
                             <!-- End Top Right -->

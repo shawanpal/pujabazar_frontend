@@ -45,7 +45,12 @@ Route::get('email', function () {
 Route::get('/', 'FrontendControllers\ViewController@index')->name('home');
 Route::get('/product-details/{code}', 'FrontendControllers\ViewController@productDetails');
 Route::post('/submit-review', 'FrontendControllers\ViewController@submitReview');
-Route::get('/store-location', 'FrontendControllers\ViewController@storeLocation')->name('home');
+Route::get('/store-location', 'FrontendControllers\ViewController@storeLocation');
+Route::get('/signin', 'FrontendControllers\ViewController@signin');
+Route::get('/signup', 'FrontendControllers\ViewController@signup');
+Route::post('/user-login', 'FrontendControllers\ViewController@userSignin');
+Route::get('/signout', 'FrontendControllers\ViewController@signout');
+Route::post('/user-register', 'FrontendControllers\ViewController@userSignUp');
 
 //Route::get('/home', 'HomeController@index');
 
