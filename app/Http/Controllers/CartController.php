@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Redirect;
 use App\State;
 use App\Category;
 use App\SubCategory;
@@ -15,6 +16,7 @@ use App\Item;
 use App\Samogri;
 use App\Booking;
 use App\Image;
+use App\ProductDesc;
 use Cart;
 use Session;
 
@@ -50,58 +52,60 @@ class CartController extends Controller {
     }
 
     public function storeProduct(Request $request) {
-        
+
         $product_id = Crypt::decryptString($request->input('atcpid'));
         $quantity = $request->input('quantity');
-        $variation = $request->input('variation');
-        if($variation == 'size'){
-            //$siz
-        }else{
-            
+        $variation_type = $request->input('variation');
+        if ($variation_type == 'size') {
+            $variation = explode('-', $request->input('product_size'));
+            $size = $variation[0];
+            $size_unit = $variation[1];
+            $weight = null;
+            $weight_unit = null;
+        } elseif ($variation_type == 'weight') {
+            $variation = explode('-', $request->input('product_weight'));
+            $weight = $variation[0];
+            $weight_unit = $variation[1];
+            $size = null;
+            $size_unit = null;
         }
-        //dd($request->input());
         $product = Product::find($product_id);
-        if ($product->discount != null) {
-            $price = $product->price - $product->discount;
+        $productDesc = ProductDesc::where(['product_id' => $product_id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])
+                ->first();
+
+
+        if ($productDesc->discount != null) {
+            $price = $productDesc->price - $productDesc->discount;
         } else {
-            $price = $product->price;
+            $price = $productDesc->price;
         }
-
-
-        $products = Product::join('images', 'products.id', '=', 'images.product_id')
-                ->where('images.main_image', '=', '1')->select('products.id', 'products.name', 'products.code', 'products.price', 'products.discount', 'images.image')->where('products.id', $product_id)
-                ->get();
-        foreach ($products as $product) {
-            $image = $product->image;
-        }
+        $image = Image::where(['product_id' => $product_id, 'main_image' => 1])
+                        ->first()
+                ->image;
 
         if (count(Cart::content()) > 0) {
-            $url = '';
-            $str = '';
             foreach (Cart::content() as $cart) {
-                $url = $cart->options->url;
-                $url = explode('/', $url);
-                $str = $url[count($url) - 2];
-
-                if ($str == 'product' && $cart->id == $product_id) {
-                    $query = Product::where('id', $cart->id)->where('stock', '>=', $cart->qty + 1)->get();
+                if ($cart->id == $product_id && $cart->size == $size && $cart->size_unit == $size_unit && $cart->weight == $weight && $cart->weight_unit == $weight_unit) {
+                    $query = ProductDesc::where(['product_id' => $cart->id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])->where('stock', '>=', $cart->qty + $quantity)->get();
                     if (count($query) > 0) {
-                        Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => 1, 'price' => $price, 'weight' => 0, 'options' => ['image' => $product->image, 'url' => route('code') . '/' . $product->code]]);
-                        Session::put('success', 'Item was added to your cart!!');
+                        Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image]);
+                        return Redirect::back()
+                                        ->with('success', 'Item was added to your cart!!');
                     } else {
-                        Session::put('error', 'Your cart is exceeding our stock limits!!');
+                        return Redirect::back()
+                                        ->with('error', 'Your cart is exceeding our stock limits!!');
                     }
                 } else {
-                    Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => 1, 'price' => $price, 'weight' => 0, 'options' => ['image' => $product->image, 'url' => route('code') . '/' . $product->code]]);
-                    Session::put('success', 'Item was added to your cart!!');
+                    Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image]);
+                    return Redirect::back()
+                                    ->with('success', 'Item was added to your cart!!');
                 }
             }
         } else {
-            Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => 1, 'price' => $price, 'weight' => 0, 'options' => ['image' => $product->image, 'url' => route('code') . '/' . $product->code]]);
-            Session::put('success', 'Item was added to your cart!!');
+            Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image]);
+            return Redirect::back()
+                            ->with('success', 'Item was added to your cart!!');
         }
-
-        return redirect('cart');
     }
 
     public function storePackage(Request $request) {

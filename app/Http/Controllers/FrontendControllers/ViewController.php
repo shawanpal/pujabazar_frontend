@@ -68,7 +68,7 @@ class ViewController extends Controller {
     }
 
     public function index() {
-        //$data['mini-carts'] = Cart::content();
+        dd(Cart::content());
         $data['state'] = $this->get_client_state();
         return view('home', $data);
     }

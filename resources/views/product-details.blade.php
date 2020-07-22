@@ -22,6 +22,18 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                @if (session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ session('error') }}
+                </div>
+                @endif
+                @if (session('success'))
+                <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ session('success') }}
+                </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-6 col-12">
                         <div class="product-gallery">
