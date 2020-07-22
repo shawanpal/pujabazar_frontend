@@ -8423,6 +8423,9 @@ html[xmlns] .flexslider .slides {
     background: #ff6630;
     color: #fff;
 }
+.shop.single .product-des .size input[type="radio"]{
+    display:none;
+}
 .shop.single .quantity {
 	display: inline-block;
 	margin-right: 10px;
@@ -8492,6 +8495,7 @@ html[xmlns] .flexslider .slides {
 	color: #fff;
 	display: inline-block;
 	font-weight: 500;
+        border:none;
 }
 .shop.single .add-to-cart .btn:hover{
 	color:#fff;

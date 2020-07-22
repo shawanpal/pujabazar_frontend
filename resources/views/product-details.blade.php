@@ -59,64 +59,83 @@
                                     {{$product->details}}
                                 </p>
                             </div>
-                            @if($desces[0]->size != '')
-                            <div class="size">
-                                <h4>Size</h4>
-                                <ul>
-                                    @foreach ($desces as $k => $desc)
-                                    @if($k == 0)
-                                    <li><a class="activev" href="javascript:void(0)" data-variation="{{$desc->size.''.$desc->size_unit }}">{{$desc->size.' '.$desc->size_unit }}</a></li>
-                                    @else
-                                    <li><a href="javascript:void(0)" data-variation="{{$desc->size.''.$desc->size_unit }}">{{$desc->size.' '.$desc->size_unit }}</a></li>
-                                    @endif
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif
-                            @if($desces[0]->weight != '')
-                            <div class="size">
-                                <h4>Weight</h4>
-                                <ul>
-                                    @foreach ($desces as $k => $desc)
-                                    @if($k == 0)
-                                    <li><a class="activev" href="javascript:void(0)" data-variation="{{$desc->weight.''.$desc->weight_unit }}">{{$desc->weight.' '.$desc->weight_unit }}</a></li>
-                                    @else
-                                    <li><a href="javascript:void(0)" data-variation="{{$desc->weight.''.$desc->weight_unit }}">{{$desc->weight.' '.$desc->weight_unit }}</a></li>
-                                    @endif
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif
-                            <div class="product-buy">
-                                <div class="quantity">
-                                    <h6>Quantity :</h6>
-                                    <div class="input-group">
-                                        <div class="button minus">
-                                            <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                                <i class="ti-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000" value="1"/>
-                                        <div class="button plus">
-                                            <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-                                                <i class="ti-plus"></i>
-                                            </button>
+                            <form action="{{url('/add-to-cart-product')}}" method="post">
+                                @if($desces[0]->size != '')
+                                <div class="size">
+                                    <h4>Size</h4>
+                                    <ul>
+                                        @foreach ($desces as $k => $desc)
+                                        @if($k == 0)
+                                        <li>
+                                            <a class="activev" href="javascript:void(0)" data-variation="{{$desc->size.''.$desc->size_unit }}">{{$desc->size.' '.$desc->size_unit }}</a>
+                                            <input type="radio" name="product_size" value="{{$desc->size.'-'.$desc->size_unit }}" checked>
+                                        </li>
+                                        @else
+                                        <li>
+                                            <a href="javascript:void(0)" data-variation="{{$desc->size.''.$desc->size_unit }}">{{$desc->size.' '.$desc->size_unit }}</a>
+                                            <input type="radio" name="product_size" value="{{$desc->size.'-'.$desc->size_unit }}">
+                                        </li>
+                                        @endif
+                                        @endforeach
+                                    </ul>
+                                    <input type="hidden" name="variation" value="size">
+                                </div>
+                                @endif
+                                @if($desces[0]->weight != '')
+                                <div class="size">
+                                    <h4>Weight</h4>
+                                    <ul>
+                                        @foreach ($desces as $k => $desc)
+                                        @if($k == 0)
+                                        <li>
+                                            <a class="activev" href="javascript:void(0)" data-variation="{{$desc->weight.''.$desc->weight_unit }}">{{$desc->weight.' '.$desc->weight_unit }}</a>
+                                            <input type="radio" name="product_weight" value="{{$desc->weight.'-'.$desc->weight_unit }}" checked>
+                                        </li>
+                                        @else
+                                        <li>
+                                            <a href="javascript:void(0)" data-variation="{{$desc->weight.''.$desc->weight_unit }}">{{$desc->weight.' '.$desc->weight_unit }}</a>
+                                            <input type="radio" name="product_weight" value="{{$desc->weight.'-'.$desc->weight_unit }}">
+                                        </li>
+                                        @endif
+                                        @endforeach
+                                    </ul>
+                                    <input type="hidden" name="variation" value="weight">
+                                </div>
+                                @endif
+
+                                <div class="product-buy">
+                                    <div class="quantity">
+                                        <h6>Quantity :</h6>
+                                        <div class="input-group">
+                                            <div class="button minus">
+                                                <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                    <i class="ti-minus"></i>
+                                                </button>
+                                            </div>
+                                            <input type="text" name="quantity" class="input-number" data-min="1" data-max="1000" value="1"/>
+                                            <div class="button plus">
+                                                <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                                    <i class="ti-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="add-to-cart">
+                                        @csrf
+                                        <input type="hidden" name="atcpid" value="{{ Crypt::encryptString($product->id) }}">
+                                        <input type="submit" class="btn" value="Add to cart">
+                                    </div>
+                                    <p class="cat">Category :
+                                        <a href="{{url('category/'.$category->category_url)}}">{{$category->category_name}}</a>
+                                        @if($product->sub_category_id != '')
+                                        ,<a href="{{url('category/'.$category->category_url.'/'.$subcategory->sub_category_url)}}">{{$subcategory->sub_category_name}}</a>
+                                        @endif
+                                    </p>
+                                    <p class="availability">
+                                        Availability : {{$desces[0]->stock}} Products In Stock
+                                    </p>
                                 </div>
-                                <div class="add-to-cart">
-                                    <a href="#" class="btn">Add to cart</a>
-                                </div>
-                                <p class="cat">Category :
-                                    <a href="{{url('category/'.$category->category_url)}}">{{$category->category_name}}</a>
-                                    @if($product->sub_category_id != '')
-                                    ,<a href="{{url('category/'.$category->category_url.'/'.$subcategory->sub_category_url)}}">{{$subcategory->sub_category_name}}</a>
-                                    @endif
-                                </p>
-                                <p class="availability">
-                                    Availability : {{$desces[0]->stock}} Products In Stock
-                                </p>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -313,12 +332,12 @@
                             </h3>
                             <div class="product-price">
                                 @if(count($rdesc) > 0)
-                                    @if($rdesc[0]->discount != '')
-                                        <span class="old">₹{{number_format($rdesc[0]->price,2)}}</span>
-                                        <span>₹{{number_format($rdesc[0]->price - $rdesc[0]->discount, 2)}}</span>
-                                    @else
-                                        <span>₹{{number_format($rdesc[0]->price,2)}}</span>
-                                    @endif
+                                @if($rdesc[0]->discount != '')
+                                <span class="old">₹{{number_format($rdesc[0]->price,2)}}</span>
+                                <span>₹{{number_format($rdesc[0]->price - $rdesc[0]->discount, 2)}}</span>
+                                @else
+                                <span>₹{{number_format($rdesc[0]->price,2)}}</span>
+                                @endif
                                 @endif
                             </div>
                         </div>

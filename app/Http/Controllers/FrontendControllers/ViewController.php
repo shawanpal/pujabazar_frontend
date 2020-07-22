@@ -17,6 +17,7 @@ use App\ProductDesc;
 use App\Category;
 use App\SubCategory;
 use App\State;
+use Cart;
 
 class ViewController extends Controller {
 
@@ -67,6 +68,7 @@ class ViewController extends Controller {
     }
 
     public function index() {
+        //$data['mini-carts'] = Cart::content();
         $data['state'] = $this->get_client_state();
         return view('home', $data);
     }
@@ -201,5 +203,5 @@ class ViewController extends Controller {
         }
     }
     
-
+    
 }
