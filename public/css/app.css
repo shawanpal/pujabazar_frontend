@@ -9143,14 +9143,20 @@ html[xmlns] .flexslider .slides {
 	float:right;
 }
 .shopping-cart .total-amount .right .button5 .btn {
-	text-align: center;
-	border-radius: 0;
-	width: 100%;
-	margin-top: 10px;
-	height: 46px;
-	line-height: 18px;
-	font-size: 13px;
-	color: #fff;
+    text-align: center;
+    border-radius: 0;
+    width: 100%;
+    margin-top: 10px;
+    height: auto;
+    line-height: 18px;
+    font-size: 13px;
+    color: #fff;
+    background: #333;
+    padding: 14px 0;
+}
+.shopping-cart .total-amount .right .button5 .btn:hover{
+    color: #fff;
+    background: #F7941D;
 }
 /*======================================
    End Shopping Cart CSS
@@ -13064,12 +13070,16 @@ object {
 	padding:0;
 }
 .shopping-cart .total-amount .left .coupon form .btn {
-	display: inline-block;
-	height: 48px;
-	margin-left: 0px;
-	width: 220px;
-	margin-top: 10px;
-	display:block;
+    display: inline-block;
+    height: 48px;
+    border: navajowhite;
+    margin-left: 4px;
+    background: transparent;
+    color: #333;
+    background: #fff;
+    box-shadow: 0px 0px 5px #00000012;
+    border-radius: 0;
+    width: 120px;
 }
 .contact-us .form-main {
 	padding: 30px;

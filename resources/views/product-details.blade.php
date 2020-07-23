@@ -120,13 +120,13 @@
                                         <h6>Quantity :</h6>
                                         <div class="input-group">
                                             <div class="button minus">
-                                                <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quantity">
                                                     <i class="ti-minus"></i>
                                                 </button>
                                             </div>
                                             <input type="text" name="quantity" class="input-number" data-min="1" data-max="1000" value="1"/>
                                             <div class="button plus">
-                                                <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                                <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quantity">
                                                     <i class="ti-plus"></i>
                                                 </button>
                                             </div>

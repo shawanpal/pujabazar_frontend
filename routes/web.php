@@ -52,7 +52,7 @@ Route::post('/user-login', 'FrontendControllers\ViewController@userSignin');
 Route::get('/signout', 'FrontendControllers\ViewController@signout');
 Route::post('/user-register', 'FrontendControllers\ViewController@userSignUp');
 Route::post('/add-to-cart-product', 'CartController@storeProduct');
-
+Route::get('/cart', 'FrontendControllers\ViewController@cart')->name('cart');
 
 
 //Route::get('/home', 'HomeController@index');
@@ -248,7 +248,7 @@ Route::post('package/modify_package', 'ViewController@packageModify');
 Route::post('/custom_login', 'ViewController@customLogin')->name('custom-login');
 
 //Front end Cart Pages
-Route::get('cart', 'CartController@show')->name('cart');
+
 
 
 Route::post('package/add-package-cart', 'CartController@storePackage');

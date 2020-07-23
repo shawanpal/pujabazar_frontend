@@ -195,6 +195,12 @@ class ViewController extends Controller {
                     ->with('success', 'Thank you for the register!');
     }
     
+    public function cart() {
+        $data['state'] = $this->get_client_state();
+        $data['cartItems'] = Cart::content();
+        return view('cart', $data);
+    }
+    
     public function signout() {
         if (Auth::check()) {
             Auth::logout();

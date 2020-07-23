@@ -82,12 +82,12 @@ class CartController extends Controller {
                         ->first()
                 ->image;
 
-        if (count(Cart::content()) > 0) {
+        if (Cart::count() > 0) {
             foreach (Cart::content() as $cart) {
-                if ($cart->id == $product_id && $cart->size == $size && $cart->size_unit == $size_unit && $cart->weight == $weight && $cart->weight_unit == $weight_unit) {
-                    $query = ProductDesc::where(['product_id' => $cart->id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])->where('stock', '>=', $cart->qty + $quantity)->get();
-                    if (count($query) > 0) {
-                        Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code ]]);
+                if ($cart->id == $product_id && $cart->options->size == $size && $cart->options->size_unit == $size_unit && $cart->options->weight == $weight && $cart->options->weight_unit == $weight_unit) {
+                    $checkStock = ProductDesc::where(['product_id' => $cart->id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])->where('stock', '>=', $cart->qty + $quantity)->get();
+                    if (count($checkStock) > 0) {
+                        Cart::update($cart->rowId, $cart->qty + $quantity);
                         return Redirect::back()
                                         ->with('success', 'Item was added to your cart!!');
                     } else {
@@ -95,15 +95,27 @@ class CartController extends Controller {
                                         ->with('error', 'Your cart is exceeding our stock limits!!');
                     }
                 } else {
-                    Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code]]);
-                    return Redirect::back()
-                                    ->with('success', 'Item was added to your cart!!');
+                    $checkStock = ProductDesc::where(['product_id' => $cart->id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])->where('stock', '>=', $cart->qty + $quantity)->get();
+                    if (count($checkStock) > 0) {
+                        Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code]]);
+                        return Redirect::back()
+                                        ->with('success', 'Item was added to your cart!!');
+                    } else {
+                        return Redirect::back()
+                                        ->with('error', 'Your cart is exceeding our stock limits!!');
+                    }
                 }
             }
         } else {
-            Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code]]);
-            return Redirect::back()
-                            ->with('success', 'Item was added to your cart!!');
+            $checkStock = ProductDesc::where(['product_id' => $product_id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])->where('stock', '>=', $quantity)->get();
+            if (count($checkStock) > 0) {
+                Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code]]);
+                return Redirect::back()
+                                ->with('success', 'Item was added to your cart!!');
+            } else {
+                return Redirect::back()
+                                ->with('error', 'Your cart is exceeding our stock limits!!');
+            }
         }
     }
 
@@ -231,15 +243,6 @@ class CartController extends Controller {
       Session::put('success', 'Item was added to your cart!!');
       return redirect('cart');
       } */
-
-    public function show() {
-        $cart = Cart::content();
-
-        return view('cart', ['locations' => session('location'), 'categorys' => $this->allCategorys, 'subcategorys' => $this->allSubCategorys, 'states' => $this->states, 'cart' => $cart]);
-
-
-        // return view('cart', array('locations' => session('location'), 'categorys' => $this->allCategorys, 'subcategorys' => $this->allSubCategorys, 'states' => $this->states, 'cart' => $cart));
-    }
 
     public function checkout(Request $request) {
         $user = Auth::user();
