@@ -23,14 +23,14 @@
     <body class="js">
 
         <!-- Preloader -->
-<!--              <div class="preloader">
-                    <div class="preloader-inner">
-                        <div class="preloader-icon">
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-                </div>-->
+        <!--              <div class="preloader">
+                            <div class="preloader-inner">
+                                <div class="preloader-icon">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>-->
         <!--   End Preloader-->
 
 
@@ -110,39 +110,39 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-2 col-md-3 col-12">
                             <div class="right-bar">
                                 <!-- Search Form -->
-                                
                                 <div class="sinlge-bar shopping">
-                                    <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
+                                    <a href="javascript:void(0)" class="single-icon"><i class="ti-bag"></i> <span class="total-count">{{Cart::count()}}</span></a>
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
-                                            <span>2 Items</span>
-                                            <a href="#">View Cart</a>
+                                            <span>{{Cart::count()}} Items</span>
+                                            <a href="{{url('/cart')}}">View Cart</a>
                                         </div>
+                                        @if(Cart::count() > 0)
+                                        @php $items = json_decode(Cart::content()); @endphp
                                         <ul class="shopping-list">
+                                            @foreach ($items as $item)
                                             <li>
-                                                <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-                                                <h4><a href="#">Woman Ring</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$99.00</span></p>
+                                                <a href="javascript:void(0)" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+                                                @if($item->options->type == 'product')
+                                                <a class="cart-img" href="{{url('/product-details/'.$item->options->code)}}"><img src="{{asset('images/'.$item->options->image)}}"></a>
+                                                <h4><a href="{{url('/product-details/'.$item->options->code)}}">{{$item->name}} - {{$item->options->size.' '.$item->options->size_unit}}{{$item->options->weight.' '.$item->options->weight_unit}}</a></h4>
+                                                @endif
+                                                <p class="quantity">{{$item->qty}}x - <span class="amount">₹{{number_format($item->price,2)}}</span></p>
                                             </li>
-                                            <li>
-                                                <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-                                                <h4><a href="#">Woman Necklace</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$35.00</span></p>
-                                            </li>
+                                            @endforeach
                                         </ul>
+                                        @endif
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Total</span>
-                                                <span class="total-amount">$134.00</span>
+                                                <span class="total-amount">₹{{Cart::total()}}</span>
                                             </div>
-                                            <a href="checkout.html" class="btn animate">Checkout</a>
+                                            <a href="{{url('/checkout')}}" class="btn animate">Checkout</a>
                                         </div>
                                     </div>
                                     <!--/ End Shopping Item -->
@@ -228,43 +228,43 @@
                             </div>
                             <div class="col-lg-9 col-12">
                                 @else
-                            <div class="col-lg-12 col-12">
-                                @endif
-                                <div class="menu-area">
-                                    <!-- Main Menu -->
-                                    <nav class="navbar navbar-expand-lg">
-                                        <div class="navbar-collapse">	
-                                            <div class="nav-inner">	
-                                                <ul class="nav main-menu menu navbar-nav">
-                                                    <li class="active"><a href="#">Home</a></li>
-                                                    <li><a href="#">Product</a></li>												
-                                                    <li><a href="#">Service</a></li>
-                                                    <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="shop-grid.html">Shop Grid</a></li>
-                                                            <li><a href="cart.html">Cart</a></li>
-                                                            <li><a href="checkout.html">Checkout</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="#">Pages</a></li>									
-                                                    <li><a href="#">Blog<i class="ti-angle-down"></i></a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="contact.html">Contact Us</a></li>
-                                                </ul>
+                                <div class="col-lg-12 col-12">
+                                    @endif
+                                    <div class="menu-area">
+                                        <!-- Main Menu -->
+                                        <nav class="navbar navbar-expand-lg">
+                                            <div class="navbar-collapse">	
+                                                <div class="nav-inner">	
+                                                    <ul class="nav main-menu menu navbar-nav">
+                                                        <li class="active"><a href="#">Home</a></li>
+                                                        <li><a href="#">Product</a></li>												
+                                                        <li><a href="#">Service</a></li>
+                                                        <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
+                                                            <ul class="dropdown">
+                                                                <li><a href="shop-grid.html">Shop Grid</a></li>
+                                                                <li><a href="cart.html">Cart</a></li>
+                                                                <li><a href="checkout.html">Checkout</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="#">Pages</a></li>									
+                                                        <li><a href="#">Blog<i class="ti-angle-down"></i></a>
+                                                            <ul class="dropdown">
+                                                                <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="contact.html">Contact Us</a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </nav>
-                                    <!--/ End Main Menu -->	
+                                        </nav>
+                                        <!--/ End Main Menu -->	
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--/ End Header Inner -->
-            
+                <!--/ End Header Inner -->
+
         </header>
         <!--/ End Header -->

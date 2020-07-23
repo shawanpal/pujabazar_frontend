@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/xampp/htdocs/puja_bazar_backend/app/Http/Controllers/CartController.php</file>
             <file>file:/C:/xampp/htdocs/puja_bazar_backend/resources/views/product-details.blade.php</file>
+            <file>file:/C:/xampp/htdocs/puja_bazar_backend/app/Http/Controllers/FrontendControllers/ViewController.php</file>
         </group>
     </open-files>
 </project-private>

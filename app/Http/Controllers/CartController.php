@@ -52,7 +52,6 @@ class CartController extends Controller {
     }
 
     public function storeProduct(Request $request) {
-
         $product_id = Crypt::decryptString($request->input('atcpid'));
         $quantity = $request->input('quantity');
         $variation_type = $request->input('variation');
@@ -88,7 +87,7 @@ class CartController extends Controller {
                 if ($cart->id == $product_id && $cart->size == $size && $cart->size_unit == $size_unit && $cart->weight == $weight && $cart->weight_unit == $weight_unit) {
                     $query = ProductDesc::where(['product_id' => $cart->id, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit])->where('stock', '>=', $cart->qty + $quantity)->get();
                     if (count($query) > 0) {
-                        Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image]);
+                        Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code ]]);
                         return Redirect::back()
                                         ->with('success', 'Item was added to your cart!!');
                     } else {
@@ -96,13 +95,13 @@ class CartController extends Controller {
                                         ->with('error', 'Your cart is exceeding our stock limits!!');
                     }
                 } else {
-                    Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image]);
+                    Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code]]);
                     return Redirect::back()
                                     ->with('success', 'Item was added to your cart!!');
                 }
             }
         } else {
-            Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image]);
+            Cart::add(['id' => $product_id, 'name' => $product->name . ' (' . $product->code . ')', 'qty' => $quantity, 'price' => $price, 'weight' => 0, 'options' => ['size' => $size, 'weight' => $weight, 'weight_unit' => $weight_unit, 'size_unit' => $size_unit, 'image' => $image, 'type' => 'product', 'code' => $product->code]]);
             return Redirect::back()
                             ->with('success', 'Item was added to your cart!!');
         }
