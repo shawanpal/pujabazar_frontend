@@ -116,6 +116,7 @@
                                 <!-- Search Form -->
                                 <div class="sinlge-bar shopping">
                                     <a href="javascript:void(0)" class="single-icon"><i class="ti-bag"></i> <span class="total-count">{{Cart::count()}}</span></a>
+                                    @if(Cart::count() > 0)
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
@@ -146,6 +147,11 @@
                                         </div>
                                     </div>
                                     <!--/ End Shopping Item -->
+                                    @else
+                                    <div class="shopping-item">
+                                        <p>No items in your cart.</p>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

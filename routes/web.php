@@ -52,8 +52,9 @@ Route::post('/user-login', 'FrontendControllers\ViewController@userSignin');
 Route::get('/signout', 'FrontendControllers\ViewController@signout');
 Route::post('/user-register', 'FrontendControllers\ViewController@userSignUp');
 Route::post('/add-to-cart-product', 'CartController@storeProduct');
-Route::get('/cart', 'FrontendControllers\ViewController@cart')->name('cart');
-
+Route::get('/cart', 'FrontendControllers\ViewController@cart');
+Route::get('/checkout', 'FrontendControllers\ViewController@checkout');
+Route::post('/place-order', 'CheckoutController@checkout');
 
 //Route::get('/home', 'HomeController@index');
 
@@ -259,7 +260,7 @@ Route::post('remove-cart', 'CartController@remove');
 Route::post('clear-cart', 'CartController@destroy');
 
 //Front end Checkout Pages
-Route::get('checkout', 'CartController@checkout')->name('checkout');
+
 Route::post('/smsSend', 'BuyerController@phoneVerification')->name('sms');
 Route::post('/session_delete', 'BuyerController@stopValidation');
 Route::post('/varify_code', 'BuyerController@varifyCode');

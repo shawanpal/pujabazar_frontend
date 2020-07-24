@@ -226,6 +226,16 @@
     </div>
 </footer>
 <!-- /End Footer Area -->
-<script src="{{ asset('js/app.js') }}"></script>
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- owl.carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<!-- owl.carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.7.2/jquery.flexslider.min.js"></script>
+
+<!-- Active JS -->
+<script src="{{asset('js/active.js')}}"></script>
 </body>
 </html>

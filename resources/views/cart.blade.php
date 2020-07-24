@@ -20,6 +20,11 @@
 </div>
 <div class="shopping-cart section">
     <div class="container">
+        @if(Cart::count() < 1)
+        <div class="alert alert-warning" role="alert">
+            <span>No items in your cart!</span>
+        </div>
+        @else
         <div class="row">
             <div class="col-12">
                 <!-- Shopping Summery -->
@@ -108,6 +113,7 @@
                 <!--/ End Total Amount -->
             </div>
         </div>
+        @endif
     </div>
 </div>
 

@@ -39,25 +39,24 @@ class ViewController extends Controller {
             $ipaddress = 'UNKNOWN';
         }
         $details = json_decode(file_get_contents("http://ipinfo.io/{$ipaddress}/json"));
-        if(isset($details->region)){
-            if($details && $details->status == 'success'){
+        if (isset($details->region)) {
+            if ($details && $details->status == 'success') {
                 return State::where(['name' => $details->region])->first();
-            }else{
+            } else {
                 return State::where(['name' => 'West Bengal'])->first();
             }
-        }else{
+        } else {
             return State::where(['name' => 'West Bengal'])->first();
         }
-        
     }
-    
+
     protected function signInValidator(array $data) {
         return Validator::make($data, [
                     'email' => ['required', 'email'],
                     'password' => ['required'],
         ]);
     }
-    
+
     protected function signUpvalidator(array $data) {
         return Validator::make($data, [
                     'name' => ['required', 'string'],
@@ -135,23 +134,23 @@ class ViewController extends Controller {
                             ->with('success', 'Thank you for the review!');
         }
     }
-    
-    public function storeLocation(){
+
+    public function storeLocation() {
         $data['state'] = $this->get_client_state();
         $data['locations'] = State::all();
         return view('store-location', $data);
     }
-    
+
     public function signin() {
         $data['state'] = $this->get_client_state();
         return view('signin', $data);
     }
-    
+
     public function signup() {
         $data['state'] = $this->get_client_state();
         return view('signup', $data);
     }
-    
+
     public function userSignin(Request $request) {
         $validator = $this->signInValidator($request->input());
         if ($validator->fails()) {
@@ -166,11 +165,11 @@ class ViewController extends Controller {
                 return Redirect('/');
             } else {
                 return Redirect::back()
-                        ->with('error', 'Wrong Credientials!');
+                                ->with('error', 'Wrong Credientials!');
             }
         }
     }
-    
+
     protected function createNewUser(array $data) {
         return User::create([
                     'role' => 'Buyer',
@@ -182,7 +181,7 @@ class ViewController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
         ]);
     }
-    
+
     public function userSignUp(Request $request) {
         $validator = $this->signUpvalidator($request->input());
         if ($validator->fails()) {
@@ -192,21 +191,63 @@ class ViewController extends Controller {
         }
         $this->createNewUser($request->input());
         return Redirect('/signin')
-                    ->with('success', 'Thank you for the register!');
+                        ->with('success', 'Thank you for the register!');
     }
-    
+
     public function cart() {
         $data['state'] = $this->get_client_state();
         $data['cartItems'] = Cart::content();
         return view('cart', $data);
     }
-    
+
+    public function checkout() {
+
+        $data['indianStates'] = array (
+            'AP' => 'Andhra Pradesh',
+            'AR' => 'Arunachal Pradesh',
+            'AS' => 'Assam',
+            'BR' => 'Bihar',
+            'CT' => 'Chhattisgarh',
+            'GA' => 'Goa',
+            'GJ' => 'Gujarat',
+            'HR' => 'Haryana',
+            'HP' => 'Himachal Pradesh',
+            'JK' => 'Jammu & Kashmir',
+            'JH' => 'Jharkhand',
+            'KA' => 'Karnataka',
+            'KL' => 'Kerala',
+            'MP' => 'Madhya Pradesh',
+            'MH' => 'Maharashtra',
+            'MN' => 'Manipur',
+            'ML' => 'Meghalaya',
+            'MZ' => 'Mizoram',
+            'NL' => 'Nagaland',
+            'OR' => 'Odisha',
+            'PB' => 'Punjab',
+            'RJ' => 'Rajasthan',
+            'SK' => 'Sikkim',
+            'TN' => 'Tamil Nadu',
+            'TR' => 'Tripura',
+            'UK' => 'Uttarakhand',
+            'UP' => 'Uttar Pradesh',
+            'WB' => 'West Bengal',
+            'AN' => 'Andaman & Nicobar',
+            'CH' => 'Chandigarh',
+            'DN' => 'Dadra and Nagar Haveli',
+            'DD' => 'Daman & Diu',
+            'DL' => 'Delhi',
+            'LD' => 'Lakshadweep',
+            'PY' => 'Puducherry',
+        );
+        $data['state'] = $this->get_client_state();
+        return view('checkout', $data);
+    }
+
     public function signout() {
         if (Auth::check()) {
             Auth::logout();
             return Redirect('/');
         }
     }
-    
-    
+
 }
