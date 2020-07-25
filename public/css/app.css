@@ -9319,61 +9319,28 @@ html[xmlns] .flexslider .slides {
 	font-weight: 400;
 	color: #333;
 }
-.shop.checkout .single-widget .checkbox {
+.shop.checkout .single-widget .radio {
 	text-align: left;
 	margin: 0;
 	padding: 0px 30px;
 	margin-top:30px;
 }
-.shop.checkout .single-widget .checkbox label {
+.shop.checkout .single-widget .radio label {
 	color: #555555;
 	position: relative;
 	font-size: 14px;
-	padding-left: 20px;
 	margin-top: -5px;
 	font-weight: 400;
 	display: block;
 	margin-bottom: 15px;
 }
-.shop.checkout .single-widget .checkbox label:last-child{
+.shop.checkout .single-widget .radio label:last-child{
 	margin-bottom:0;
 }
-.shop.checkout .single-widget .checkbox label:hover{
+.shop.checkout .single-widget .radio label:hover{
 	cursor:pointer;
 }
-.shop.checkout .single-widget .checkbox label input{
-	display:none;
-}
-.shop.checkout .single-widget .checkbox label::before {
-	position: absolute;
-	content: "";
-	left: 0;
-	top: 7px;
-	width: 12px;
-	height: 12px;
-	line-height: 16px;
-	border: 1px solid #666;
-	border-radius: 100%;
-}
-.shop.checkout .single-widget .checkbox label::after {
-	position: absolute;
-	content: "";
-	left: 0;
-	top: 7px;
-	width: 12px;
-	height: 12px;
-	line-height: 16px;
-	border-radius: 100%;
-	display:block;
-	background:#666;
-	transform:scale(0);
-	transition:all 0.4s ease;
-}
-.shop.checkout .single-widget .checkbox label.checked::after{
-	opacity:1;
-	visibility:visible;
-	transform:scale(1);
-}
+
 .shop.checkout .single-widget.payement {
 	padding: 0px 38px;
 	text-align: center;

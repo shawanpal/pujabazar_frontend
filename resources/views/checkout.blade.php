@@ -25,6 +25,12 @@
             <div class="row">
                 <div class="col-lg-8 col-12">
                     <div class="checkout-form">
+                        @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{ session('error') }}
+                        </div>
+                        @endif
                         <h2>Make Your Checkout Here</h2>
                         <p>Please register in order to checkout more quickly</p>
                         <!-- Form -->
@@ -33,30 +39,45 @@
                                 <div class="form-group">
                                     <label>Full Name<span>*</span></label>
                                     <input type="text" name="name" class="form-control" required="required"/>
+                                    @if($errors->has('name'))
+                                    <p class="error">{{ $errors->first('name') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Email<span>*</span></label>
                                     <input type="email" name="email" class="form-control" required="required"/>
+                                    @if($errors->has('email'))
+                                    <p class="error">{{ $errors->first('email') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Flat / House / Office No.<span>*</span></label>
                                     <input type="text" name="flat_house_office_no" class="form-control" required="required"/>
+                                    @if($errors->has('flat_house_office_no'))
+                                    <p class="error">{{ $errors->first('flat_house_office_no') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Street / Society / Office Name.<span>*</span></label>
                                     <input type="text" name="street_society_office_name" class="form-control" required="required"/>
+                                    @if($errors->has('street_society_office_name'))
+                                    <p class="error">{{ $errors->first('street_society_office_name') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Area / Locality<span>*</span></label>
                                     <input type="text" name="location" class="form-control" required="required"/>
+                                    @if($errors->has('location'))
+                                    <p class="error">{{ $errors->first('location') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
@@ -66,6 +87,9 @@
                                         <option value="">Select Country</option>
                                         <option value="IN">India</option>
                                     </select>
+                                    @if($errors->has('country_name'))
+                                    <p class="error">{{ $errors->first('country_name') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
@@ -77,12 +101,18 @@
                                         <option value="{{$indianStateId}}">{{$indianStateName}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('state'))
+                                    <p class="error">{{ $errors->first('state') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Postal Code<span>*</span></label>
                                     <input type="text" name="pin" class="form-control" required="required"/>
+                                    @if($errors->has('pin'))
+                                    <p class="error">{{ $errors->first('pin') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
@@ -91,6 +121,9 @@
                                     <p><input type="radio" name="address_type" value="Home" checked /> Home
                                         <input type="radio" name="address_type" value="Office" /> Office
                                         <input type="radio" name="address_type" value="Other"/> Others</p>
+                                    @if($errors->has('address_type'))
+                                    <p class="error">{{ $errors->first('address_type') }}</p>
+                                    @endif
                                     <div id="oth-addr" style="display:none"><input type="text" class="form-control" name="address_other"></div>
                                 </div>
                             </div>
@@ -102,6 +135,9 @@
                                         <input type="radio" name="deli_time" value="4 PM - 7 PM"> 4 PM - 7 PM
                                         <input type="radio" name="deli_time" value="7 PM - 9 PM"> 7 PM - 9 PM
                                     </p>
+                                    @if($errors->has('deli_time'))
+                                    <p class="error">{{ $errors->first('deli_time') }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -126,14 +162,17 @@
                         <div class="single-widget">
                             <h2>Payments</h2>
                             <div class="content">
-                                <div class="checkbox">
-                                    <label class="checkbox-inline">
-                                        <input name="pay_method" type="checkbox" value="pay_on_delivery" checked/> 
+                                <div class="radio">
+                                    <label>
+                                        <input name="pay_method" type="radio" value="pay_on_delivery" checked/> 
                                         Pay On Delivery</label>
-                                    <label class="checkbox-inline">
-                                        <input name="pay_method" type="checkbox" value="pay_by_card"/>
+                                    <label>
+                                        <input name="pay_method" type="radio" value="pay_by_card"/>
                                         Credit Card/Debit Card/Net Banking
                                     </label>
+                                    @if($errors->has('pay_method'))
+                                    <p class="error">{{ $errors->first('pay_method') }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
