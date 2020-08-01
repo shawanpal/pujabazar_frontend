@@ -11,12 +11,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Product;
+use App\Package;
+use App\Booking;
 use App\Image;
 use App\Review;
 use App\ProductDesc;
 use App\Category;
 use App\SubCategory;
 use App\State;
+use App\Banner;
 use Cart;
 
 class ViewController extends Controller {
@@ -68,6 +71,26 @@ class ViewController extends Controller {
 
     public function index() {
         $data['state'] = $this->get_client_state();
+        $data['heroBanner'] = Banner::where(['primary_position' => '1'])
+                ->first();
+        $heroBannerLink = json_decode($data['heroBanner']->url);
+        if ($heroBannerLink->type == 'product') {
+            $data['mainBannerLink'] = Product::where(['id' => $heroBannerLink->item])
+                    ->first();
+            $data['linkType'] = 'product';
+        } elseif ($heroBannerLink->type == 'package') {
+            $data['mainBannerLink'] = Package::where(['id' => $heroBannerLink->item])
+                    ->first();
+            $data['linkType'] = 'package';
+        } elseif ($heroBannerLink->type == 'booking') {
+            $data['mainBannerLink'] = Booking::where(['id' => $heroBannerLink->item])
+                    ->first();
+            $data['linkType'] = 'booking';
+        }
+        $data['smallBanners'] = Banner::where(['primary_position' => '2'])
+                ->get();
+        $data['trendProducts'] = Product::where(['trend' => '1'])
+                ->get();
         return view('home', $data);
     }
 
@@ -94,8 +117,15 @@ class ViewController extends Controller {
             }
         }
         $data['stars'] = $star;
-
+        
         return view('product-details', $data);
+    }
+    
+    public function packageDetails($code){
+        $data['state'] = $this->get_client_state();
+        $data['package'] = Package::where(['code' => $code])->first();
+        $data['images'] = Image::where(['package_id' => $data['package']->id])->get();
+        return view('package-details', $data);
     }
 
     protected function reviewValidator(array $data) {
@@ -243,7 +273,7 @@ class ViewController extends Controller {
             return view('checkout', $data);
         } else {
             return Redirect('/signin')
-                                ->with('error', 'Please login to checkout items!');
+                            ->with('error', 'Please login to checkout items!');
         }
     }
 

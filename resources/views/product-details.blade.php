@@ -10,7 +10,7 @@
                             <a href="{{url('/')}}">Home<i class="ti-arrow-right"></i></a>
                         </li>
                         <li class="active">
-                            <a>Shop Details</a>
+                            <a>Product Details</a>
                         </li>
                     </ul>
                 </div>

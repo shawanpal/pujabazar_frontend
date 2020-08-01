@@ -44,6 +44,7 @@ Route::get('email', function () {
 // New Route
 Route::get('/', 'FrontendControllers\ViewController@index')->name('home');
 Route::get('/product-details/{code}', 'FrontendControllers\ViewController@productDetails');
+Route::get('/package-details/{code}', 'FrontendControllers\ViewController@packageDetails');
 Route::post('/submit-review', 'FrontendControllers\ViewController@submitReview');
 Route::get('/store-location', 'FrontendControllers\ViewController@storeLocation');
 Route::get('/signin', 'FrontendControllers\ViewController@signin');

@@ -22,7 +22,7 @@
 <!-- End Shop Newsletter -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="quickViewModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -226,16 +226,8 @@
     </div>
 </footer>
 <!-- /End Footer Area -->
-<!-- Jquery -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<!-- Bootstrap -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<!-- owl.carousel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<!-- owl.carousel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.7.2/jquery.flexslider.min.js"></script>
 
 <!-- Active JS -->
-<script src="{{asset('js/active.js')}}"></script>
+<script src="{{asset('js/web.js')}}"></script>
 </body>
 </html>
